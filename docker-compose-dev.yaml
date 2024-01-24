@@ -1,0 +1,27 @@
+services:
+  user-db:
+    extends:
+      file: docker-compose-base.yaml
+      service: user-db
+    ports:
+      - 5432:5432
+  user:
+    extends:
+      file: docker-compose-base.yaml
+      service: user
+    ports:
+      - 8080:8080
+  user-dapr:
+    extends:
+      file: docker-compose-base.yaml
+      service: user-dapr
+    volumes:
+      - "./.dapr/dapr-config-minimal.yaml:/config.yaml"
+      - "./.dapr/components:/components"
+  placement:
+    image: "daprio/dapr"
+    command: ["./placement", "-port", "50006"]
+    ports:
+      - "50006:50006"
+volumes:
+  user-db-data:
