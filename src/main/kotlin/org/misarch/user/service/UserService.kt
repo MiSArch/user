@@ -28,7 +28,14 @@ class UserService(
      * @return the created user
      */
     suspend fun createUser(createUserDTO: CreateUserDTO): UserEntity {
-        val user = UserEntity(createUserDTO.username, createUserDTO.name, null, null, OffsetDateTime.now())
+        val user = UserEntity(
+            createUserDTO.username,
+            createUserDTO.firstName,
+            createUserDTO.lastName,
+            null,
+            null,
+            OffsetDateTime.now()
+        )
         val savedUser = repository.save(user).awaitSingle()
         eventPublisher.publishEvent(UserEvents.USER_CREATED, savedUser.toEventDTO())
         return savedUser

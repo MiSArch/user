@@ -23,7 +23,8 @@ import java.util.*
 @Table
 class UserEntity(
     var username: String,
-    var name: String,
+    var firstName: String,
+    var lastName: String,
     var birthday: LocalDate?,
     var gender: Gender?,
     val dateJoined: OffsetDateTime,
@@ -31,11 +32,19 @@ class UserEntity(
     override val id: UUID? = null
 ) : BaseEntity<User> {
 
+    companion object {
+        /**
+         * Querydsl entity
+         */
+        val ENTITY = QUserEntity.userEntity!!
+    }
+
     override fun toDTO(): User {
         return User(
             id = id!!,
             username = username,
-            name = name,
+            firstName = firstName,
+            lastName = lastName,
             birthday = birthday,
             gender = gender,
             dateJoined = dateJoined
@@ -46,7 +55,8 @@ class UserEntity(
         return UserDTO(
             id = id!!,
             username = username,
-            name = name,
+            firstName = firstName,
+            lastName = lastName,
             dateJoined = dateJoined.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
         )
     }
