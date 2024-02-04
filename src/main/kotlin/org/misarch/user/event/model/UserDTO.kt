@@ -1,6 +1,5 @@
 package org.misarch.user.event.model
 
-import java.time.OffsetDateTime
 import java.util.*
 
 /**

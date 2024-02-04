@@ -8,13 +8,17 @@ import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
-import java.util.UUID
+import java.util.*
 
 /**
  * User entity
  *
  * @property username the username of the user
  * @property name the name of the user
+ * @property birthday the birthday of the user
+ * @property gender the gender of the user
+ * @property dateJoined the date the user joined
+ * @property id the id of the user
  */
 @Table
 class UserEntity(

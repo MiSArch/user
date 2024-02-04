@@ -1,7 +1,5 @@
 package org.misarch.user.event.model
 
-import java.util.*
-
 /**
  * User DTO used for events
  *

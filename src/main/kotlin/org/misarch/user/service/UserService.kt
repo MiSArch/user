@@ -4,7 +4,6 @@ import kotlinx.coroutines.reactor.awaitSingle
 import org.misarch.user.event.EventPublisher
 import org.misarch.user.event.UserEvents
 import org.misarch.user.event.model.CreateUserDTO
-import org.misarch.user.event.model.UserDTO
 import org.misarch.user.persistence.model.UserEntity
 import org.misarch.user.persistence.repository.UserRepository
 import org.springframework.stereotype.Service

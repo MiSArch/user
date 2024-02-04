@@ -1,6 +1,6 @@
 package org.misarch.user.persistence.model
 
-import java.util.UUID
+import java.util.*
 
 /**
  * An entity that can be converted to a DTO
