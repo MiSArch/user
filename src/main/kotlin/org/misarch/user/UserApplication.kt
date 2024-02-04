@@ -6,8 +6,8 @@ import org.springframework.boot.runApplication
 
 @SpringBootApplication
 @EnableQuerydslR2dbcRepositories
-class NotificationApplication
+class UserApplication
 
 fun main(args: Array<String>) {
-    runApplication<NotificationApplication>(*args)
+    runApplication<UserApplication>(*args)
 }
