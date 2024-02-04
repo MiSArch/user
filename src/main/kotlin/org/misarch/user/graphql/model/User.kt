@@ -13,8 +13,10 @@ class User(
     id: UUID,
     @property:GraphQLDescription("The username of the user")
     val username: String,
-    @property:GraphQLDescription("The name of the user")
-    val name: String,
+    @property:GraphQLDescription("The first name of the user")
+    val firstName: String,
+    @property:GraphQLDescription("The last name of the user")
+    val lastName: String,
     @property:GraphQLDescription("The birthday of the user")
     val birthday: LocalDate?,
     @property:GraphQLDescription("The gender of the user")

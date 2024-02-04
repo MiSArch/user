@@ -4,7 +4,6 @@ import kotlinx.coroutines.reactor.awaitSingle
 import org.misarch.user.event.EventPublisher
 import org.misarch.user.event.UserEvents
 import org.misarch.user.event.model.CreateUserDTO
-import org.misarch.user.event.model.UserDTO
 import org.misarch.user.persistence.model.UserEntity
 import org.misarch.user.persistence.repository.UserRepository
 import org.springframework.stereotype.Service
@@ -29,7 +28,14 @@ class UserService(
      * @return the created user
      */
     suspend fun createUser(createUserDTO: CreateUserDTO): UserEntity {
-        val user = UserEntity(createUserDTO.username, createUserDTO.name, null, null, OffsetDateTime.now())
+        val user = UserEntity(
+            createUserDTO.username,
+            createUserDTO.firstName,
+            createUserDTO.lastName,
+            null,
+            null,
+            OffsetDateTime.now()
+        )
         val savedUser = repository.save(user).awaitSingle()
         eventPublisher.publishEvent(UserEvents.USER_CREATED, savedUser.toEventDTO())
         return savedUser

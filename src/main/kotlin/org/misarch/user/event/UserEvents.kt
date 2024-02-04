@@ -10,6 +10,11 @@ object UserEvents {
     const val USER_CREATED = "user/created"
 
     /**
+     * Topic for create user events (a user should be created)
+     */
+    const val USER_CREATE = "user/user/create"
+
+    /**
      * Name of the pubsub component
      */
     const val PUBSUB_NAME = "pubsub"
