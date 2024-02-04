@@ -32,7 +32,6 @@ class DaprEventController(
         @RequestBody
         cloudEvent: CloudEvent<CreateUserDTO>
     ) {
-        println("Received user create event: ${cloudEvent.data}")
         userService.createUser(cloudEvent.data)
     }
 
