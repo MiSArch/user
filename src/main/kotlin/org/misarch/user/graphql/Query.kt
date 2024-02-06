@@ -30,8 +30,8 @@ class Query(
         dfe: DataFetchingEnvironment
     ): CompletableFuture<User> {
         val authorizedUser = dfe.authorizedUser
-        if (!authorizedUser.isEmployee && authorizedUser.id != id) {
-            throw IllegalStateException("Unauthorized access: ${authorizedUser.id} is not an employee or admin")
+        if (authorizedUser.id != id) {
+            authorizedUser.checkIsEmployee()
         }
         return dfe.getDataLoader<UUID, User>(UserDataLoader::class.simpleName!!).load(id)
     }
@@ -46,11 +46,8 @@ class Query(
         orderBy: UserOrder? = null,
         dfe: DataFetchingEnvironment
     ): UserConnection {
-        val authorizedUser = dfe.authorizedUser
-        if (!authorizedUser.isEmployee) {
-            throw IllegalStateException("Unauthorized access: ${authorizedUser.id} is not an employee or admin")
-        }
-        return UserConnection(first, skip, null, orderBy, userRepository)
+        dfe.authorizedUser.checkIsEmployee()
+        return UserConnection(first, skip, null, orderBy, userRepository, dfe.authorizedUserOrNull)
     }
 
     @GraphQLDescription("Get the currently authenticated user")

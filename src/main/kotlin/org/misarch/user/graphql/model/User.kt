@@ -3,6 +3,8 @@ package org.misarch.user.graphql.model
 import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.generator.federation.directives.FieldSet
 import com.expediagroup.graphql.generator.federation.directives.KeyDirective
+import graphql.schema.DataFetchingEnvironment
+import org.misarch.user.graphql.authorizedUser
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.util.*
@@ -17,10 +19,39 @@ class User(
     val firstName: String,
     @property:GraphQLDescription("The last name of the user")
     val lastName: String,
-    @property:GraphQLDescription("The birthday of the user")
-    val birthday: LocalDate?,
-    @property:GraphQLDescription("The gender of the user")
-    val gender: Gender?,
-    @property:GraphQLDescription("The date the user joined")
-    val dateJoined: OffsetDateTime,
-) : Node(id)
+    private val birthday: LocalDate?,
+    private val gender: Gender?,
+    private val dateJoined: OffsetDateTime,
+) : Node(id) {
+
+    @GraphQLDescription("The birthday of the user")
+    fun birthday(dfe: DataFetchingEnvironment): LocalDate? {
+        checkIsSameUserOrEmployee(dfe)
+        return birthday
+    }
+
+    @GraphQLDescription("The gender of the user")
+    fun gender(dfe: DataFetchingEnvironment): Gender? {
+        checkIsSameUserOrEmployee(dfe)
+        return gender
+    }
+
+    @GraphQLDescription("The date when the user joined")
+    fun dateJoined(dfe: DataFetchingEnvironment): OffsetDateTime {
+        checkIsSameUserOrEmployee(dfe)
+        return dateJoined
+    }
+
+    /**
+     * Checks that the user is the same as the authorized user or that the authorized user is an employee.
+     *
+     * @param dfe The DataFetchingEnvironment to get the authorized user from
+     */
+    private fun checkIsSameUserOrEmployee(dfe: DataFetchingEnvironment) {
+        val authorizedUser = dfe.authorizedUser
+        if (authorizedUser.id != id) {
+            authorizedUser.checkIsEmployee()
+        }
+    }
+
+}
