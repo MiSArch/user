@@ -17,13 +17,13 @@ data class AuthorizedUser(
      * Check if the user is an employee or admin.
      */
     val isEmpolyee: Boolean
-        get() = roles.contains("EMPLOYEE") || isAdmin
+        get() = roles.contains("employee") || isAdmin
 
 
     /**
      * Check if the user is an admin.
      */
     val isAdmin: Boolean
-        get() = roles.contains("ADMIN")
+        get() = roles.contains("admin")
 
 }
