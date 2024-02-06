@@ -30,7 +30,7 @@ class Query(
         dfe: DataFetchingEnvironment
     ): CompletableFuture<User> {
         val authorizedUser = dfe.authorizedUser
-        if (!authorizedUser.isEmpolyee && authorizedUser.id != id) {
+        if (!authorizedUser.isEmployee && authorizedUser.id != id) {
             throw IllegalStateException("Unauthorized access: ${authorizedUser.id} is not an employee or admin")
         }
         return dfe.getDataLoader<UUID, User>(UserDataLoader::class.simpleName!!).load(id)
@@ -47,7 +47,7 @@ class Query(
         dfe: DataFetchingEnvironment
     ): UserConnection {
         val authorizedUser = dfe.authorizedUser
-        if (!authorizedUser.isEmpolyee) {
+        if (!authorizedUser.isEmployee) {
             throw IllegalStateException("Unauthorized access: ${authorizedUser.id} is not an employee or admin")
         }
         return UserConnection(first, skip, null, orderBy, userRepository)
