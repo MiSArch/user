@@ -3,6 +3,7 @@ package org.misarch.user.graphql
 import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.server.operations.Query
 import graphql.schema.DataFetchingEnvironment
+import kotlinx.coroutines.reactor.awaitSingle
 import org.misarch.user.graphql.dataloader.UserDataLoader
 import org.misarch.user.graphql.model.User
 import org.misarch.user.graphql.model.connection.UserConnection
@@ -28,6 +29,10 @@ class Query(
         id: UUID,
         dfe: DataFetchingEnvironment
     ): CompletableFuture<User> {
+        val authorizedUser = dfe.authorizedUser
+        if (!authorizedUser.isEmployee && authorizedUser.id != id) {
+            throw IllegalStateException("Unauthorized access: ${authorizedUser.id} is not an employee or admin")
+        }
         return dfe.getDataLoader<UUID, User>(UserDataLoader::class.simpleName!!).load(id)
     }
 
@@ -38,9 +43,23 @@ class Query(
         @GraphQLDescription("Number of items to skip")
         skip: Int? = null,
         @GraphQLDescription("Ordering")
-        orderBy: UserOrder? = null
+        orderBy: UserOrder? = null,
+        dfe: DataFetchingEnvironment
     ): UserConnection {
+        val authorizedUser = dfe.authorizedUser
+        if (!authorizedUser.isEmployee) {
+            throw IllegalStateException("Unauthorized access: ${authorizedUser.id} is not an employee or admin")
+        }
         return UserConnection(first, skip, null, orderBy, userRepository)
+    }
+
+    @GraphQLDescription("Get the currently authenticated user")
+    suspend fun currentUser(
+        dfe: DataFetchingEnvironment
+    ): User? {
+        return dfe.authorizedUserOrNull?.id?.let {
+            userRepository.findById(it).awaitSingle().toDTO()
+        }
     }
 
 }
