@@ -1,6 +1,7 @@
 package org.misarch.user.service
 
 import kotlinx.coroutines.reactor.awaitSingle
+import net.sf.jsqlparser.statement.select.Offset
 import org.misarch.user.event.EventPublisher
 import org.misarch.user.event.UserEvents
 import org.misarch.user.event.model.CreateUserDTO
@@ -28,15 +29,14 @@ class UserService(
      * @return the created user
      */
     suspend fun createUser(createUserDTO: CreateUserDTO): UserEntity {
-        val user = UserEntity(
-            createUserDTO.username,
-            createUserDTO.firstName,
-            createUserDTO.lastName,
-            null,
-            null,
-            OffsetDateTime.now()
+        repository.createUser(
+            id = createUserDTO.id,
+            username = createUserDTO.username,
+            firstName = createUserDTO.firstName,
+            lastName = createUserDTO.lastName,
+            dateJoined = OffsetDateTime.now()
         )
-        val savedUser = repository.save(user).awaitSingle()
+        val savedUser = repository.findById(createUserDTO.id).awaitSingle()
         eventPublisher.publishEvent(UserEvents.USER_CREATED, savedUser.toEventDTO())
         return savedUser
     }
