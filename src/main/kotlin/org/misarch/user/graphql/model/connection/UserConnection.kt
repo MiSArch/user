@@ -3,9 +3,10 @@ package org.misarch.user.graphql.model.connection
 import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.generator.federation.directives.ShareableDirective
 import com.querydsl.core.types.Expression
-import com.querydsl.core.types.Predicate
+import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.core.types.dsl.ComparableExpression
 import com.querydsl.sql.SQLQuery
+import org.misarch.user.graphql.AuthorizedUser
 import org.misarch.user.graphql.model.User
 import org.misarch.user.graphql.model.connection.base.*
 import org.misarch.user.persistence.model.UserEntity
@@ -19,6 +20,7 @@ import org.misarch.user.persistence.repository.UserRepository
  * @param predicate The predicate to filter the items by
  * @param order The order to sort the items by
  * @param repository The repository to fetch the items from
+ * @param authorizedUser The authorized user
  * @param applyJoin A function to apply a join to the query
  */
 @GraphQLDescription("A connection to a list of `User` values.")
@@ -26,17 +28,20 @@ import org.misarch.user.persistence.repository.UserRepository
 class UserConnection(
     first: Int?,
     skip: Int?,
-    predicate: Predicate?,
+    predicate: BooleanExpression?,
     order: UserOrder?,
     repository: UserRepository,
+    authorizedUser: AuthorizedUser?,
     applyJoin: (query: SQLQuery<*>) -> SQLQuery<*> = { it }
 ) : BaseConnection<User, UserEntity>(
     first,
     skip,
+    null,
     predicate,
     (order ?: UserOrder.DEFAULT).toOrderSpecifier(UserOrderField.ID),
     repository,
     UserEntity.ENTITY,
+    authorizedUser,
     applyJoin
 ) {
 
