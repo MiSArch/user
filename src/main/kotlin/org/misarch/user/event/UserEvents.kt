@@ -7,7 +7,7 @@ object UserEvents {
     /**
      * Topic for user creation events (a user has been created)
      */
-    const val USER_CREATED = "user/created"
+    const val USER_CREATED = "user/user/created"
 
     /**
      * Topic for create user events (a user should be created)
