@@ -1,11 +1,12 @@
 spring:
   main:
     allow-bean-definition-overriding: true
-  r2dbc:
-    url: r2dbc:postgresql://user-db:5432/user
   flyway:
-    url: jdbc:postgresql://user-db:5432/user
     locations: classpath:db/migration
+management:
+  endpoints:
+    web:
+      base-path: /
 graphql:
   packages: org.misarch.user
   federation:
