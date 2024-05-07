@@ -2,6 +2,7 @@ package org.misarch.user.persistence.model
 
 import org.misarch.user.event.model.UserDTO
 import org.misarch.user.graphql.model.Gender
+import org.misarch.user.graphql.model.Name
 import org.misarch.user.graphql.model.User
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
@@ -43,8 +44,10 @@ class UserEntity(
         return User(
             id = id!!,
             username = username,
-            firstName = firstName,
-            lastName = lastName,
+            name = Name(
+                firstName = firstName,
+                lastName = lastName,
+            ),
             birthday = birthday,
             gender = gender,
             dateJoined = dateJoined
