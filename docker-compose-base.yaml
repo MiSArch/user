@@ -28,6 +28,8 @@ services:
       - OTEL_LOGS_EXPORTER=none
       - OTEL_INSTRUMENTATION_HTTP_CLIENT_EMIT_EXPERIMENTAL_TELEMETRY=true
       - OTEL_INSTRUMENTATION_HTTP_SERVER_EMIT_EXPERIMENTAL_TELEMETRY=true
+      - OTEL_SERVICE_NAME=user
+      - OTEL_TRACES_EXPORTER=none
     healthcheck:
       test: wget -qO - http://localhost:8080/health || exit 1
       interval: 1s

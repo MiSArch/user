@@ -10,4 +10,4 @@ WORKDIR /home/java
 COPY --from=0 /home/gradle/app/build/libs/*.jar app.jar
 COPY --from=0 /home/gradle/app/src/main/resources/opentelemetry-javaagent.jar opentelemetry-javaagent.jar
 
-CMD java -javaagent:/home/java/opentelemetry-javaagent.jar -Dotel.service.name=user -jar ./app.jar
+CMD java -javaagent:/home/java/opentelemetry-javaagent.jar -jar ./app.jar
